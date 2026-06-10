@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuantumBot - Dashboard Premium</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #1f2937; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-[#0b0f19] text-gray-100 min-h-screen font-sans">
+
+    <div class="max-w-6xl mx-auto px-4 py-8">
+        <header class="flex justify-between items-center mb-8 border-b border-gray-800 pb-5">
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-500 p-2 rounded-lg text-black animate-pulse"><i class="fa-solid fa-robot text-xl"></i></div>
+                <div>
+                    <h1 class="text-2xl font-bold tracking-wide">QUANTUM<span class="text-emerald-400">BOT</span></h1>
+                    <p class="text-xs text-gray-400">Analisador Probabilístico Remoto</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 bg-gray-900/80 px-4 py-2 rounded-full border border-gray-800">
+                <span class="flex h-3 w-3 relative">
+                    <span id="status-ping" class="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span id="status-dot" class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                </span>
+                <span id="status-texto" class="text-sm font-semibold uppercase tracking-wider text-red-400">Desconectado</span>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="bg-gray-900/50 border border-gray-800 rounded-2xl p-6 backdrop-blur-sm shadow-xl">
+                <h2 class="text-lg font-bold mb-5 flex items-center gap-2 border-b border-gray-800 pb-3">
+                    <i class="fa-solid fa-sliders text-emerald-400"></i> Painel de Controle
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">E-mail IQ Option</label>
+                        <input type="email" id="email" class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:border-emerald-500 text-white" placeholder="seu_email@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Senha</label>
+                        <input type="password" id="senha" class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl py-2.5 px-4 text-sm focus:outline-none focus:border-emerald-500 text-white" placeholder="••••••••">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Conta</label>
+                            <select id="conta" class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl py-2.5 px-3 text-sm text-emerald-400">
+                                <option value="PRACTICE">🔴 DEMO</option>
+                                <option value="REAL">🟢 REAL</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Ativo</label>
+                            <input type="text" id="par" class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl py-2.5 px-3 text-sm text-white uppercase" value="EURUSD">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Timeframe</label>
+                            <select id="timeframe" class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl py-2.5 px-3 text-sm text-white">
+                                <option value="1">M1 (1 Minuto)</option>
+                                <option value="5">M5 (5 Minutos)</option>
+                                <option value="15">M15 (15 Minutos)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Valor ($)</label>
+                            <input type="number" id="valor" class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl py-2.5 px-3 text-sm text-white" value="5.00">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-400 uppercase mb-2">Estratégia</label>
+                        <select id="estrategia" class="w-full bg-[#0b0f19] border border-gray-800 rounded-xl py-2.5 px-3 text-sm text-emerald-400">
+                            <option value="mhi_minoria">MHI - Minoria</option>
+                            <option value="mhi_maioria">MHI - Maioria</option>
+                            <option value="tres_torres">Três Torres Gêmeas</option>
+                        </select>
+                    </div>
+                    <div class="pt-4 space-y-2">
+                        <button onclick="iniciarBot()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-[#0b0f19] font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-play"></i> INICIAR BOT
+                        </button>
+                        <button onclick="pararBot()" class="w-full bg-transparent hover:bg-red-500/10 border border-red-500/30 text-red-400 font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-stop"></i> INTERROMPER
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 flex flex-col gap-6">
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-emerald-950/20 border border-emerald-500/20 rounded-2xl p-4 flex items-center justify-between shadow-lg">
+                        <div>
+                            <p class="text-xs text-emerald-400/70 font-semibold uppercase">Wins</p>
+                            <h3 id="placar-win" class="text-3xl font-black text-emerald-400 mt-1">0</h3>
+                        </div>
+                        <div class="bg-emerald-500/10 p-3 rounded-xl text-emerald-400"><i class="fa-solid fa-trophy text-xl"></i></div>
+                    </div>
+                    <div class="bg-red-950/20 border border-red-500/20 rounded-2xl p-4 flex items-center justify-between shadow-lg">
+                        <div>
+                            <p class="text-xs text-red-400/70 font-semibold uppercase">Losses</p>
+                            <h3 id="placar-loss" class="text-3xl font-black text-red-400 mt-1">0</h3>
+                        </div>
+                        <div class="bg-red-500/10 p-3 rounded-xl text-red-400"><i class="fa-solid fa-chart-line-down text-xl"></i></div>
+                    </div>
+                    <div class="bg-blue-950/20 border border-blue-500/20 rounded-2xl p-4 flex items-center justify-between shadow-lg">
+                        <div>
+                            <p class="text-xs text-blue-400/70 font-semibold uppercase">Status Operacional</p>
+                            <h3 id="operacao-status" class="text-sm font-bold text-blue-400 mt-2 tracking-wide truncate">Aguardando...</h3>
+                        </div>
+                        <div id="operacao-icone" class="bg-blue-500/10 p-3 rounded-xl text-blue-400"><i class="fa-solid fa-hourglass-half"></i></div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900/50 border border-gray-800 rounded-2xl p-6 flex-1 flex flex-col shadow-xl">
+                    <h2 class="text-lg font-bold mb-4 flex items-center gap-2 border-b border-gray-800 pb-3">
+                        <i class="fa-solid fa-terminal text-emerald-400"></i> Logs Remotos do Sistema
+                    </h2>
+                    <div id="console-logs" class="custom-scrollbar flex-1 bg-[#070a12] border border-gray-800 rounded-xl p-4 font-mono text-xs text-gray-300 space-y-2 overflow-y-auto h-[320px] text-left"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ⚠️ SUBSTITUA COM O LINK DA SUA CONTA DO PYTHONANYWHERE ABAIXO:
+        const URL_BACKEND = "https://giliard.pythonanywhere.com";
+
+        function iniciarBot() {
+            const dados = {
+                email: document.getElementById('email').value,
+                senha: document.getElementById('senha').value,
+                conta: document.getElementById('conta').value,
+                par: document.getElementById('par').value,
+                timeframe: document.getElementById('timeframe').value,
+                valor: document.getElementById('valor').value,
+                estrategia: document.getElementById('estrategia').value
+            };
+            fetch(`${URL_BACKEND}/iniciar`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(dados)
+            });
+        }
+
+        function pararBot() {
+            fetch(`${URL_BACKEND}/parar`, { method: 'POST' });
+        }
+
+        setInterval(() => {
+            fetch(`${URL_BACKEND}/status`)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('status-texto').innerText = data.status;
+                const dot = document.getElementById('status-dot');
+                const ping = document.getElementById('status-ping');
+                const opStatus = document.getElementById('operacao-status');
+                const opIcone = document.getElementById('operacao-icone');
+
+                if (data.status === "Rodando") {
+                    document.getElementById('status-texto').className = "text-sm font-semibold uppercase tracking-wider text-emerald-400";
+                    dot.className = "relative inline-flex rounded-full h-3 w-3 bg-emerald-500";
+                    ping.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
+                    opStatus.innerText = "🔍 EM ANÁLISE...";
+                    opStatus.className = "text-sm font-bold text-amber-400 mt-2 tracking-wide animate-pulse";
+                    opIcone.innerHTML = `<i class="fa-solid fa-magnifying-glass-chart animate-spin text-amber-400"></i>`;
+                } else {
+                    document.getElementById('status-texto').className = "text-sm font-semibold uppercase tracking-wider text-red-400";
+                    dot.className = "relative inline-flex rounded-full h-3 w-3 bg-red-500";
+                    ping.className = "hidden";
+                    opStatus.innerText = "Desconectado";
+                    opStatus.className = "text-sm font-bold text-blue-400 mt-2";
+                    opIcone.innerHTML = `<i class="fa-solid fa-hourglass-half text-blue-400"></i>`;
+                }
+
+                document.getElementById('placar-win').innerText = data.wins;
+                document.getElementById('placar-loss').innerText = data.losses;
+
+                const consoleLogs = document.getElementById('console-logs');
+                if (data.logs) {
+                    consoleLogs.innerHTML = data.logs.map(log => {
+                        if(log.includes('❌') || log.includes('LOSS')) return `<div class="text-red-400">${log}</div>`;
+                        if(log.includes('✅') || log.includes('WIN')) return `<div class="text-emerald-400">${log}</div>`;
+                        return `<div>${log}</div>`;
+                    }).join('');
+                    consoleLogs.scrollTop = consoleLogs.scrollHeight;
+                }
+            }).catch(e => console.log("Aguardando conexão com o servidor..."));
+        }, 2000);
+    </script>
+</body>
+</html>
